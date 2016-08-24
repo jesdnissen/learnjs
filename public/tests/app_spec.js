@@ -13,9 +13,18 @@ describe('LearnJS', function() {
 		expect(learnjs.problemView).toHaveBeenCalledWith('42');
 	});
 	describe('problem view', function() {
+		var view;
+		beforeEach(function() {
+			view = learnjs.problemView('1');
+		});
 		it('has a title that includes the problem number', function() {
-			var view = learnjs.problemView('1');
-			expect(view.text()).toEqual('Problem #1 Kommer snart!');
+			expect(view.find('.title').text()).toEqual('Problem #1');
+		});
+		it('shows the description', function() {
+			expect(view.find('[data-name="description"]').text()).toEqual('Hvad er sandhed?');
+		});
+		it('shows the problem code', function() {
+			expect(view.find('[data-name="code"]').text()).toEqual('function problem() {return __; }');
 		});
 	});
 	it('invokes the router when loaded', function() {

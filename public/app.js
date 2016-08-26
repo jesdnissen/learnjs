@@ -5,7 +5,7 @@ var learnjs = {};
 learnjs.problems = [
 	{
 		description: "Hvad er sandhed?",
-		code: "function problem() {return __; }"
+		code: "function problem() { return __; }"
 	},
 	{
 		description: "Simpel regning",
@@ -20,13 +20,13 @@ learnjs.applyObject = function(obj, elem) {
 };
 
 learnjs.problemView = function(data) {
-	var problemNumber = parseInt(data,10);
+	var problemNumber = parseInt(data, 10);
 	var view = $('.templates .problem-view').clone();
 	var problemData = learnjs.problems[problemNumber - 1];
-	var resultFlash = view.find('result');
+	var resultFlash = view.find('.result');
 	
 	function checkAnswer() {
-		var answer = view.find('.ansver').val();
+		var answer = view.find('.answer').val();
 		var test = problemData.code.replace('__', answer) + '; problem();';
 		return eval(test);
 	}
@@ -40,9 +40,9 @@ learnjs.problemView = function(data) {
 		return false;
 	}
 	
-	view.find('check-btn').click(checkAnswerClick);
+	view.find('.check-btn').click(checkAnswerClick);
 	view.find('.title').text('Problem #' + problemNumber);
-	learnjs.applyObject(learnjs.problemData, view);
+	learnjs.applyObject(problemData, view);
 	return view;
 }
 

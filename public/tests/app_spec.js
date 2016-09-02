@@ -43,18 +43,38 @@ describe('LearnJS', function() {
 		});
 		
 		describe('answer section', function() {
-			it('can check a correct answer by hitting a button', function() {
-				view.find('.answer').val('true');
-				view.find('.check-btn').click();
-				expect(view.find('.result').text()).toEqual('Rigtigt!');
+			var resultFlash;
+			
+			beforeEach(function() {
+				spyOn(learnjs, 'flashElement');
+				resultFlash = view.find('.result');
 			});
+			
+			describe('When the ansver is correct', function() {
+				beforeEach(function() {					
+				  view.find('.answer').val('true');
+				  view.find('.check-btn').click();
+				});
+				
+				it('flashes the result', function() {
+					var flashArgs = learnjs.flashElement.calls.argsFor(0);
+					expect(flashArgs[0]).toEqual(resultFlash);
+					expect(flashArgs[1].find('span').text()).toEqual('Rigtigt!');
+				});
+				
+				it('kan vise link til næste problem', function() {
+					var link = learnjs.flashElement.calls.argsFor(0)[1].find('a');
+					expect(link.text()).toEqual('Næste Problem');
+					expect(link.attr('href')).toEqual('#problem-2');
+				});
+			});
+			
 			it('afviser et ukorrekt svar', function() {
 				view.find('.answer').val('false');
 				view.find('.check-btn').click();
-				expect(view.find('.result').text()).toEqual('Forkert!');
+				expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Forkert!');
 			});
 		});
-				
 	});
 });
 
